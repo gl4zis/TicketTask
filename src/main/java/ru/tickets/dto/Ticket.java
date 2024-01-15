@@ -11,13 +11,13 @@ public class Ticket {
     private String origin_name;
     private String destination;
     private String destination_name;
-    @JsonFormat(pattern = "dd.MM.yy", timezone = "Europe/Moscow")
+    @JsonFormat(pattern = "dd.MM.yy")
     private Date departure_date;
-    @JsonFormat(pattern = "HH:mm", timezone = "Europe/Moscow")
+    @JsonFormat(pattern = "HH:mm")
     private Date departure_time;
-    @JsonFormat(pattern = "dd.MM.yy", timezone = "Europe/Moscow")
+    @JsonFormat(pattern = "dd.MM.yy")
     private Date arrival_date;
-    @JsonFormat(pattern = "HH:mm", timezone = "Europe/Moscow")
+    @JsonFormat(pattern = "HH:mm")
     private Date arrival_time;
     private String carrier;
     private Integer stops;
