@@ -1,7 +1,6 @@
 package ru.tickets;
 
 import ru.tickets.dto.Ticket;
-import ru.tickets.model.FlightData;
 import ru.tickets.service.FlightService;
 
 import java.io.IOException;
@@ -19,20 +18,20 @@ public class Main {
         String filepath = args[0];
         FlightService flightService = new FlightService();
 
-        List<Ticket> tickets;
+        List<Ticket> allTickets;
         try {
-            tickets = flightService.parseTicketsFromJson(filepath);
+            allTickets = flightService.parseTicketsFromJson(filepath);
         } catch (IOException e) {
             System.out.println("Something went wrong during parsing json file. Please check if file is correct");
             return;
         }
 
-        List<FlightData> flights = flightService.getFlightsVVOtoTLV(tickets);
+        List<Ticket> flights = flightService.getFlightsVVOtoTLV(allTickets);
         List<String> carriers = flightService.getAllCarriers(flights);
 
         Map<String, String> minCarrierTime = new HashMap<>();
         for (String carrier : carriers) {
-            List<FlightData> carrierFlight = flights.stream()
+            List<Ticket> carrierFlight = flights.stream()
                     .filter(flight -> flight.getCarrier().equals(carrier)).toList();
 
             minCarrierTime.put(carrier, Utils.timeFromMillis(flightService.getMinimumFlightTime(carrierFlight)));

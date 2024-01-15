@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
-
+// DTO, representing the json data
 @Data
 public class Ticket {
     private String origin;

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 import ru.tickets.Utils;
 import ru.tickets.dto.Ticket;
-import ru.tickets.model.FlightData;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,41 +17,39 @@ public class FlightService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<Ticket> parseTicketsFromJson(String filepath) throws IOException {
-        Map<String, List<Ticket>> jsonData = objectMapper.readValue(new File(filepath), new TypeReference<>() {
-        });
+        Map<String, List<Ticket>> jsonData = objectMapper.readValue(new File(filepath), new TypeReference<>() {});
         return jsonData.get("tickets");
     }
 
-    public List<FlightData> getFlightsVVOtoTLV(List<Ticket> tickets) {
+    public List<Ticket> getFlightsVVOtoTLV(List<Ticket> tickets) {
         return tickets.stream()
                 .filter(ticket -> ticket.getOrigin().equals("VVO"))
                 .filter(ticket -> ticket.getDestination().equals("TLV"))
-                .map(Utils::flightFromTicket)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getAllCarriers(List<FlightData> flights) {
-        return flights.stream()
-                .map(FlightData::getCarrier)
+    public List<String> getAllCarriers(List<Ticket> tickets) {
+        return tickets.stream()
+                .map(Ticket::getCarrier)
                 .collect(Collectors.toList());
     }
 
-    public long getMinimumFlightTime(List<FlightData> flights) {
-        return flights.stream()
-                .mapToLong(FlightData::getFlightMillis)
+    public long getMinimumFlightTime(List<Ticket> tickets) {
+        return tickets.stream()
+                .mapToLong(Utils::getFlightMillis)
                 .min().orElseThrow();
     }
 
-    public double getAveragePrice(List<FlightData> flights) {
-        return flights.stream()
-                .mapToInt(FlightData::getPrice)
+    public double getAveragePrice(List<Ticket> tickets) {
+        return tickets.stream()
+                .mapToInt(Ticket::getPrice)
                 .average().orElseThrow();
     }
 
-    public double getMedianPrice(List<FlightData> flights) {
-        int size = flights.size();
-        int[] sortedPrices = flights.stream()
-                .mapToInt(FlightData::getPrice)
+    public double getMedianPrice(List<Ticket> tickets) {
+        int size = tickets.size();
+        int[] sortedPrices = tickets.stream()
+                .mapToInt(Ticket::getPrice)
                 .sorted()
                 .toArray();
 

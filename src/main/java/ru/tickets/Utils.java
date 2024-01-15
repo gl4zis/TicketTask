@@ -1,20 +1,13 @@
 package ru.tickets;
 
 import ru.tickets.dto.Ticket;
-import ru.tickets.model.FlightData;
 
 public class Utils {
-    public static FlightData flightFromTicket(Ticket ticket) {
+    public static long getFlightMillis(Ticket ticket) {
         long takeOffMillis = ticket.getDeparture_date().getTime() + ticket.getDeparture_time().getTime();
         long landMillis = ticket.getArrival_date().getTime() + ticket.getArrival_time().getTime();
 
-        return FlightData.builder()
-                .origin(ticket.getOrigin())
-                .carrier(ticket.getCarrier())
-                .flightMillis(landMillis - takeOffMillis)
-                .destination(ticket.getDestination())
-                .price(ticket.getPrice())
-                .build();
+        return landMillis - takeOffMillis;
     }
 
     public static String timeFromMillis(long millis) {
